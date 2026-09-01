@@ -6,6 +6,10 @@ W5100215A). Two LM1972 digital attenuators driven from the original 8-bit
 parallel volume bus by a CH32V203C8T6 RISC-V MCU, with a measured calibration
 mapping.
 
+The primary aim of this project was to give me repro modules for my Operation 
+Wolf machine but I also passed the measured curves on to MAME where they have 
+been integrated. 
+
 ## Measured response
 
 The original TC0060DCA's volume response was measured on the
