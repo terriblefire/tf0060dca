@@ -1,0 +1,92 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Version vars
+      run: |
+        GITVERSION=$(git rev-parse --short HEAD)
+        DATESTRING=$(date +%Y_%m_%d)
+        if [[ $GITHUB_REF == refs/tags/* ]]; then VERSION=${GITHUB_REF#refs/tags/};
+        else VERSION="snapshot_${DATESTRING}_${GITVERSION}"; fi
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "STAMP=${GITVERSION}_${DATESTRING}" >> $GITHUB_ENV
+        echo "GERBER_DIR=TF0060DCA_${GITVERSION}_${DATESTRING}" >> $GITHUB_ENV
+
+    - name: Generate Gerbers
+      uses: addnab/docker-run-action@v3
+      with:
+        image: terriblefire78/eagle:v1
+        options: --volumes-from=${{ env.JOB_CONTAINER_NAME }} -w ${{ github.workspace }}/eagle
+        run: |
+          mkdir -p "${{ env.GERBER_DIR }}"
+          eagle -X -dCAMJOB -jjlcpcb_4_layer_v9.cam -o"${{ env.GERBER_DIR }}" TF0060DCA.brd
+
+    - name: Generate schematic PDF
+      uses: addnab/docker-run-action@v3
+      with:
+        image: terriblefire78/eagle-pdf
+        options: --volumes-from=${{ env.JOB_CONTAINER_NAME }} -w ${{ github.workspace }}/eagle
+        run: |
+          python /app/generate_schematic_pdf.py TF0060DCA.sch "TF0060DCA_${{ env.STAMP }}.pdf"
+
+    - name: Generate BOM + CPL (JLC)
+      run: |
+        make -C eagle assembly
+
+    - name: Build firmware (MounRiver RISC-V GCC)
+      uses: addnab/docker-run-action@v3
+      with:
+        image: terriblefire78/mrs:latest
+        options: --volumes-from=${{ env.JOB_CONTAINER_NAME }} -w ${{ github.workspace }}/firmware/CH32V203C8T6/obj
+        run: |
+          make clean
+          make -j4
+
+    - name: Package release
+      run: |
+        PKG="TF0060DCA_${{ env.VERSION }}"
+        mkdir -p release/$PKG/{pcb,assembly,docs,firmware}
+        cd eagle && zip -r "${{ env.GERBER_DIR }}.zip" "${{ env.GERBER_DIR }}" && cd ..
+        cp eagle/${{ env.GERBER_DIR }}.zip release/$PKG/pcb/
+        cp eagle/TF0060DCA_${{ env.STAMP }}.pdf release/$PKG/docs/
+        cp eagle/TF0060DCA_bom.csv eagle/TF0060DCA_cpl.csv release/$PKG/assembly/
+        cp firmware/CH32V203C8T6/obj/CH32V203C8T6.hex release/$PKG/firmware/TF0060DCA_${{ env.STAMP }}.hex
+        cp firmware/CH32V203C8T6/obj/CH32V203C8T6.elf release/$PKG/firmware/TF0060DCA_${{ env.STAMP }}.elf
+        cd release && zip -r "$PKG.zip" "$PKG"
+
+    - name: Upload release package artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: TF0060DCA-release-${{ env.VERSION }}
+        path: release/TF0060DCA_${{ env.VERSION }}.zip
+        retention-days: 90
+
+    - name: Create Gitea/GitHub Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: release/TF0060DCA_${{ env.VERSION }}.zip
+        draft: false
+        prerelease: false

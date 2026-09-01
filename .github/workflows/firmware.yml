@@ -1,0 +1,61 @@
+name: Build Firmware
+
+on:
+  push:
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/firmware.yml'
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  firmware:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set version vars
+      run: |
+        echo "FW_NAME=TF0060DCA_firmware_$(git rev-parse --short HEAD)_$(date +%Y_%m_%d)" >> $GITHUB_ENV
+
+    - name: Build firmware (MounRiver RISC-V GCC)
+      uses: addnab/docker-run-action@v3
+      with:
+        image: terriblefire78/mrs:latest
+        options: --volumes-from=${{ env.JOB_CONTAINER_NAME }} -w ${{ github.workspace }}/firmware/CH32V203C8T6/obj
+        run: |
+          make clean
+          make -j4
+
+    - name: Stamp output names
+      run: |
+        cd firmware/CH32V203C8T6/obj
+        cp CH32V203C8T6.hex ${{ env.FW_NAME }}.hex
+        cp CH32V203C8T6.elf ${{ env.FW_NAME }}.elf
+
+    - name: Upload firmware as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.FW_NAME }}
+        path: |
+          firmware/CH32V203C8T6/obj/${{ env.FW_NAME }}.hex
+          firmware/CH32V203C8T6/obj/${{ env.FW_NAME }}.elf
+        retention-days: 90
+
+    - name: Release firmware (on tags)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          firmware/CH32V203C8T6/obj/${{ env.FW_NAME }}.hex
+          firmware/CH32V203C8T6/obj/${{ env.FW_NAME }}.elf

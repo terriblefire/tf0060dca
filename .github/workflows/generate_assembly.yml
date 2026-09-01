@@ -1,0 +1,52 @@
+name: Generate Assembly Files
+
+on:
+  push:
+    paths:
+      - 'eagle/*.sch'
+      - 'eagle/*.brd'
+      - 'eagle/extract_bom.py'
+      - 'eagle/extract_cpl.py'
+      - 'eagle/Makefile'
+      - '.github/workflows/generate_assembly.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-assembly:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate BOM and CPL
+        run: |
+          cd eagle
+          make assembly
+
+      - name: Upload BOM as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: assembly-bom
+          path: eagle/TF0060DCA_bom.csv
+          retention-days: 90
+
+      - name: Upload CPL as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: assembly-cpl
+          path: eagle/TF0060DCA_cpl.csv
+          retention-days: 90
+
+      - name: Display assembly file stats
+        run: |
+          echo "BOM lines:"; wc -l eagle/TF0060DCA_bom.csv
+          echo "CPL lines:"; wc -l eagle/TF0060DCA_cpl.csv
