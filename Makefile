@@ -12,8 +12,8 @@ eagle:
 	$(MAKE) -C eagle all
 
 firmware:
-	$(MRS_DOCKER) make -j4
-	@echo "Firmware built: firmware/CH32V203C8T6/obj/CH32V203C8T6.hex"
+	$(MRS_DOCKER) sh -c 'make -j4 && riscv-none-embed-objcopy -O binary CH32V203C8T6.elf CH32V203C8T6.bin'
+	@echo "Firmware built: firmware/CH32V203C8T6/obj/CH32V203C8T6.hex (.bin, .elf)"
 
 firmware-clean:
 	$(MRS_DOCKER) make clean

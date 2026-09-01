@@ -36,11 +36,13 @@ jobs:
         run: |
           make clean
           make -j4
+          riscv-none-embed-objcopy -O binary CH32V203C8T6.elf CH32V203C8T6.bin
 
     - name: Stamp output names
       run: |
         cd firmware/CH32V203C8T6/obj
         cp CH32V203C8T6.hex ${{ env.FW_NAME }}.hex
+        cp CH32V203C8T6.bin ${{ env.FW_NAME }}.bin
         cp CH32V203C8T6.elf ${{ env.FW_NAME }}.elf
 
     - name: Upload firmware as artifact
@@ -49,6 +51,7 @@ jobs:
         name: ${{ env.FW_NAME }}
         path: |
           firmware/CH32V203C8T6/obj/${{ env.FW_NAME }}.hex
+          firmware/CH32V203C8T6/obj/${{ env.FW_NAME }}.bin
           firmware/CH32V203C8T6/obj/${{ env.FW_NAME }}.elf
         retention-days: 90
 
@@ -58,4 +61,5 @@ jobs:
       with:
         files: |
           firmware/CH32V203C8T6/obj/${{ env.FW_NAME }}.hex
+          firmware/CH32V203C8T6/obj/${{ env.FW_NAME }}.bin
           firmware/CH32V203C8T6/obj/${{ env.FW_NAME }}.elf

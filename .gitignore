@@ -8,5 +8,6 @@
 *.svf
 *.elf
 *.hex
+*.bin
 *.map
 *.lst

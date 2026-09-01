@@ -63,6 +63,7 @@ jobs:
         run: |
           make clean
           make -j4
+          riscv-none-embed-objcopy -O binary CH32V203C8T6.elf CH32V203C8T6.bin
 
     - name: Package release
       run: |
@@ -73,6 +74,7 @@ jobs:
         cp eagle/TF0060DCA_${{ env.STAMP }}.pdf release/$PKG/docs/
         cp eagle/TF0060DCA_bom.csv eagle/TF0060DCA_cpl.csv release/$PKG/assembly/
         cp firmware/CH32V203C8T6/obj/CH32V203C8T6.hex release/$PKG/firmware/TF0060DCA_${{ env.STAMP }}.hex
+        cp firmware/CH32V203C8T6/obj/CH32V203C8T6.bin release/$PKG/firmware/TF0060DCA_${{ env.STAMP }}.bin
         cp firmware/CH32V203C8T6/obj/CH32V203C8T6.elf release/$PKG/firmware/TF0060DCA_${{ env.STAMP }}.elf
         cd release && zip -r "$PKG.zip" "$PKG"
 
