@@ -26,6 +26,22 @@ different shape.
 
 ![Measured vs ideal response, linear S-curve view](measured/response_linear.svg)
 
+## Test fixture
+
+The fixture that produced the measurements: a Raspberry Pi Zero drives the SD
+volume bus and clocks while the DUT's audio output is measured. It carries two
+20-pin SIP sockets so an original TC0060DCA and the TF0060DCA replacement can
+be exercised side by side.
+
+| | |
+|---|---|
+| ![Bare test fixture PCB](images/testfixture_bare.jpg) | ![Replacement modules, front and back](images/tf0060dca_modules.jpg) |
+| *Bare fixture: Molex power in, Pi Zero header, two SIP-20 sockets* | *TF0060DCA replacement modules* |
+| ![Fixture on the bench](images/testfixture_bench_1.jpg) | ![Fixture with DUT fitted](images/testfixture_dut.jpg) |
+| *On the bench, mounted on a Pi Zero* | *With a device under test fitted* |
+| ![Bench, second angle](images/testfixture_bench_2.jpg) | ![Overhead view on the Pi Zero](images/testfixture_pi.jpg) |
+| *Probing during a measurement run* | *Overhead: Pi Zero and fixture* |
+
 ## TC0060DCA pin 7 (V_B)
 
 Pin 7 of the original TC0060DCA has been asked about; the evidence from the
