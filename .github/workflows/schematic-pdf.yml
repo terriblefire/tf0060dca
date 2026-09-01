@@ -34,12 +34,12 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: terriblefire78/eagle-pdf
-        options: --volumes-from=${{ env.JOB_CONTAINER_NAME }} -w ${{ github.workspace }}/eagle
+        options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}/eagle
         run: |
           python /app/generate_schematic_pdf.py TF0060DCA.sch "${{ env.PDF_FILE }}"
 
     - name: Upload PDF as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: schematic-pdf
         path: eagle/${{ env.PDF_FILE }}

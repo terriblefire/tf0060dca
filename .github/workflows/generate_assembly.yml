@@ -33,14 +33,14 @@ jobs:
           make assembly
 
       - name: Upload BOM as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: assembly-bom
           path: eagle/TF0060DCA_bom.csv
           retention-days: 90
 
       - name: Upload CPL as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: assembly-cpl
           path: eagle/TF0060DCA_cpl.csv

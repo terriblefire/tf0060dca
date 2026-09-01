@@ -38,7 +38,7 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: terriblefire78/eagle:v1
-        options: --volumes-from=${{ env.JOB_CONTAINER_NAME }} -w ${{ github.workspace }}/eagle
+        options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}/eagle
         run: |
           mkdir -p "${{ env.GERBER_DIR }}"
           eagle -X -dCAMJOB -jjlcpcb_4_layer_v9.cam -o"${{ env.GERBER_DIR }}" TF0060DCA.brd
@@ -47,7 +47,7 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: terriblefire78/eagle-pdf
-        options: --volumes-from=${{ env.JOB_CONTAINER_NAME }} -w ${{ github.workspace }}/eagle
+        options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}/eagle
         run: |
           python /app/generate_schematic_pdf.py TF0060DCA.sch "TF0060DCA_${{ env.STAMP }}.pdf"
 
@@ -59,7 +59,7 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: terriblefire78/mrs:latest
-        options: --volumes-from=${{ env.JOB_CONTAINER_NAME }} -w ${{ github.workspace }}/firmware/CH32V203C8T6/obj
+        options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}/firmware/CH32V203C8T6/obj
         run: |
           make clean
           make -j4
@@ -77,7 +77,7 @@ jobs:
         cd release && zip -r "$PKG.zip" "$PKG"
 
     - name: Upload release package artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: TF0060DCA-release-${{ env.VERSION }}
         path: release/TF0060DCA_${{ env.VERSION }}.zip

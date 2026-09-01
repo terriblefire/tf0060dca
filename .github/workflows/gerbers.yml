@@ -32,13 +32,13 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: terriblefire78/eagle:v1
-        options: --volumes-from=${{ env.JOB_CONTAINER_NAME }} -w ${{ github.workspace }}/eagle
+        options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}/eagle
         run: |
           mkdir -p "${{ env.GERBER_DIR }}"
           eagle -X -dCAMJOB -jjlcpcb_4_layer_v9.cam -o"${{ env.GERBER_DIR }}" TF0060DCA.brd
 
     - name: Upload Gerber files as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.GERBER_DIR }}
         path: eagle/${{ env.GERBER_DIR }}

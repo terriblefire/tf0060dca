@@ -32,7 +32,7 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: terriblefire78/mrs:latest
-        options: --volumes-from=${{ env.JOB_CONTAINER_NAME }} -w ${{ github.workspace }}/firmware/CH32V203C8T6/obj
+        options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }}/firmware/CH32V203C8T6/obj
         run: |
           make clean
           make -j4
@@ -44,7 +44,7 @@ jobs:
         cp CH32V203C8T6.elf ${{ env.FW_NAME }}.elf
 
     - name: Upload firmware as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.FW_NAME }}
         path: |
