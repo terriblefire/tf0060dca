@@ -1,8 +1,41 @@
 # TF0060DCA
 
-Dual-channel digital audio attenuation board. Two LM1972 digital attenuators
-driven from an 8-bit parallel volume bus by a CH32V203C8T6 RISC-V MCU, with a
-measured calibration mapping.
+Drop-in replacement for the Taito TC0060DCA custom dual digitally-controlled
+attenuator (as used on the Operation Wolf sound board, Taito schematic
+W5100215A). Two LM1972 digital attenuators driven from the original 8-bit
+parallel volume bus by a CH32V203C8T6 RISC-V MCU, with a measured calibration
+mapping.
+
+## Measured response
+
+The original TC0060DCA's volume response was measured on the
+[test fixture](testfixture/) by sweeping the SD volume code and recording the
+output level ([measured/measured.csv](measured/measured.csv)). The device is a
+linear-in-dB attenuator at almost exactly **0.5 dB per code step** (least-squares
+fit over the first 45 codes: -0.49 dB/step, within +/-0.75 dB of a straight
+line) until the measurement reaches the test rig's ~ -27 dB noise floor. This
+is why the LM1972, a native 0.5 dB/step attenuator, is used as the replacement
+part.
+
+![Measured vs ideal response](measured/response.svg)
+
+## TC0060DCA pin 7 (V_B)
+
+Pin 7 of the original TC0060DCA has been asked about; the evidence from the
+original hardware and this project:
+
+- **Original Taito schematic** (W5100215A, sheet 4-2, IC49): pin 7 is strapped
+  directly to the same ground rail as pins 6, 10 and 20. There is no external
+  bias network (no capacitor or divider). Pin 8 is drawn as an unconnected
+  stub (N.C.).
+- **Test fixture**: a real TC0060DCA runs correctly with pin 7 tied to GND —
+  the measured response above was captured that way.
+- **This replacement** leaves pin 7 unconnected (net `V_B`) and pin 8 N.C.,
+  and functions in the host board.
+
+So pin 7 is a ground-referenced bias/substrate connection ("V_B"), tied to 0 V
+in the machine and carrying no signal; a replacement can safely leave it
+unconnected. It is not a volume or audio pin.
 
 - `eagle/` - EAGLE schematic/board plus CAM, BOM/CPL and check tooling
   (`make help` for targets; gerbers and PDF build via the terriblefire78
