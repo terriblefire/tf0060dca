@@ -17,7 +17,14 @@ line) until the measurement reaches the test rig's ~ -27 dB noise floor. This
 is why the LM1972, a native 0.5 dB/step attenuator, is used as the replacement
 part.
 
-![Measured vs ideal response](measured/response.svg)
+![Measured vs ideal response, log view](measured/response.svg)
+
+The same data in linear amplitude, alongside the sigmoid (S-curve) model from
+[measured/mkcalib.py](measured/mkcalib.py): the measured response follows the
+0.5 dB/step exponential closely, while the sigmoid model is a noticeably
+different shape.
+
+![Measured vs ideal response, linear S-curve view](measured/response_linear.svg)
 
 ## TC0060DCA pin 7 (V_B)
 
