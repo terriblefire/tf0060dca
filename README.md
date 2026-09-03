@@ -64,6 +64,22 @@ So pin 7 is a ground-referenced bias/substrate connection ("V_B"), tied to 0 V
 in the machine and carrying no signal; a replacement can safely leave it
 unconnected. It is not a volume or audio pin.
 
+## Design notes (FAQ)
+
+**Are C8-C11, C14 and C15 polarized?** No. They are drawn with Eagle's `C-US`
+device, whose American-style symbol has one straight and one curved plate for
+*any* capacitor - a polarized cap in Eagle carries an explicit "+" mark, which
+these don't have. Physically they are 0805 ceramic (MLCC) parts, inherently
+non-polar, used as AC coupling in the audio path.
+
+**What value are the coupling caps?** These are AC couplers, so the exact
+value is not critical - it only sets the high-pass corner, which sits far
+below audio for anything in this region. The design value was a nominal 6 uF;
+on the JLCPCB production run the part matcher resolved this to a 10 uF X5R
+(Samsung CL21A106KOQNNNE, LCSC C1713), which is what is fitted on assembled
+boards and what the schematic now records. If hand-building, 4.7 uF, 6.8 uF
+or 10 uF are all fine.
+
 - `eagle/` - EAGLE schematic/board plus CAM, BOM/CPL and check tooling
   (`make help` for targets; gerbers and PDF build via the terriblefire78
   Docker images)
