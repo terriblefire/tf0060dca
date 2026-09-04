@@ -4,6 +4,7 @@
 [![Generate Gerbers](https://github.com/terriblefire/tf0060dca/actions/workflows/gerbers.yml/badge.svg)](https://github.com/terriblefire/tf0060dca/actions/workflows/gerbers.yml)
 [![Generate Assembly Files](https://github.com/terriblefire/tf0060dca/actions/workflows/generate_assembly.yml/badge.svg)](https://github.com/terriblefire/tf0060dca/actions/workflows/generate_assembly.yml)
 [![Generate Schematic PDF](https://github.com/terriblefire/tf0060dca/actions/workflows/schematic-pdf.yml/badge.svg)](https://github.com/terriblefire/tf0060dca/actions/workflows/schematic-pdf.yml)
+[![Create Release](https://github.com/terriblefire/tf0060dca/actions/workflows/release.yml/badge.svg)](https://github.com/terriblefire/tf0060dca/actions/workflows/release.yml)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg)](LICENSE)
 
 Drop-in replacement for the Taito TC0060DCA custom dual digitally-controlled
