@@ -10,6 +10,10 @@ The primary aim of this project was to give me repro modules for my Operation
 Wolf machine but I also passed the measured curves on to MAME where they have 
 been integrated. 
 
+## Community
+
+Questions, build reports and general chat: [join the Discord](https://discord.gg/awMzHfB86T).
+
 ## Measured response
 
 The original TC0060DCA's volume response was measured on the
