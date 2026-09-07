@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="440" viewBox="0 0 760 440" role="img" aria-label="CH32 firmware output level versus SD volume code, from the lm1972_mapping table and LM1972 datasheet attenuation values">
+<style>
+ .bg{fill:#ffffff} .t1{fill:#1f1e1d;font:600 15px system-ui,sans-serif}
+ .t2{fill:#5c5a55;font:12px system-ui,sans-serif} .t3{fill:#5c5a55;font:italic 12px system-ui,sans-serif}
+ .g{stroke:#e4e2dd;stroke-width:1} .ax{stroke:#b3b1ab;stroke-width:1}
+ .s1{stroke:#2a78d6} .s2{stroke:#eb6834} .s3{stroke:#1baf7a} .s4{stroke:#eda100}
+ .l1{fill:#2a78d6} .l2{fill:#eb6834} .l3{fill:#1baf7a} .l4{fill:#eda100}
+ .dl{font:600 12px system-ui,sans-serif}
+ @media (prefers-color-scheme: dark){
+  .bg{fill:#1a1a19} .t1{fill:#ffffff} .t2,.t3{fill:#c3c2b7}
+  .g{stroke:#33322f} .ax{stroke:#5c5a55}
+  .s1{stroke:#3987e5} .s2{stroke:#d95926} .s3{stroke:#199e70} .s4{stroke:#c98500}
+  .l1{fill:#3987e5} .l2{fill:#d95926} .l3{fill:#199e70} .l4{fill:#c98500}
+ }
+</style>
+<rect class="bg" width="760" height="440" rx="6"/>
+<text class="t1" x="56" y="26">CH32 firmware response (lm1972_mapping)</text>
+<line class="g" x1="56" x2="610" y1="52.2" y2="52.2"/><line class="g" x1="56" x2="610" y1="134.0" y2="134.0"/><line class="g" x1="56" x2="610" y1="215.9" y2="215.9"/><line class="g" x1="56" x2="610" y1="297.8" y2="297.8"/><line class="g" x1="56" x2="610" y1="379.6" y2="379.6"/>
+<line class="ax" x1="56" x2="610" y1="52.2" y2="52.2"/>
+<text class="t2" x="48" y="56.2" text-anchor="end">0</text><text class="t2" x="48" y="138.0" text-anchor="end">-20</text><text class="t2" x="48" y="219.9" text-anchor="end">-40</text><text class="t2" x="48" y="301.8" text-anchor="end">-60</text><text class="t2" x="48" y="383.6" text-anchor="end">-80</text><text class="t2" x="56.0" y="416" text-anchor="middle">0</text><text class="t2" x="125.5" y="416" text-anchor="middle">32</text><text class="t2" x="195.0" y="416" text-anchor="middle">64</text><text class="t2" x="264.6" y="416" text-anchor="middle">96</text><text class="t2" x="334.1" y="416" text-anchor="middle">128</text><text class="t2" x="403.6" y="416" text-anchor="middle">160</text><text class="t2" x="473.1" y="416" text-anchor="middle">192</text><text class="t2" x="542.7" y="416" text-anchor="middle">224</text>
+<text class="t2" x="333" y="432" text-anchor="middle">SD volume code (0 = silence, 255 = full volume)</text>
+<text class="t2" transform="rotate(-90 16 220)" x="16" y="220" text-anchor="middle">output level (dB)</text>
+<path d="M56.0,387.8 L242.8,387.8" fill="none" class="s1" stroke-width="2"/>
+<path d="M245.0,357.1 L247.2,234.3 L249.4,215.9 L251.5,199.5 L253.7,189.3 L255.9,185.2 L258.0,179.1 L260.2,175.0 L262.4,170.9 L264.6,168.8 L266.7,164.7 L268.9,162.7 L271.1,160.7 L273.3,158.6 L275.4,156.6 L277.6,154.5 L279.8,152.5 L281.9,150.4 L284.1,148.4 L286.3,146.3 L288.5,144.3 L290.6,142.2 L292.8,140.2 L295.0,140.2 L297.2,138.1 L299.3,136.1 L301.5,134.0 L303.7,134.0 L305.8,132.0 L308.0,130.0 L310.2,130.0 L312.4,127.9 L314.5,125.9 L316.7,125.9 L318.9,123.8 L321.1,123.8 L323.2,121.8 L325.4,121.8 L327.6,119.7 L329.7,119.7 L331.9,117.7 L334.1,117.7 L336.3,115.6 L338.4,115.6 L340.6,113.6 L342.8,113.6 L344.9,111.5 L347.1,111.5 L349.3,109.5 L351.5,109.5 L353.6,107.4 L355.8,107.4 L358.0,105.4 L360.2,105.4 L362.3,103.3 L364.5,103.3 L366.7,101.3 L368.8,101.3 L371.0,99.3 L373.2,99.3 L375.4,99.3 L377.5,97.2 L379.7,97.2 L381.9,97.2 L384.1,95.2 L386.2,95.2 L388.4,93.1 L390.6,93.1 L392.7,93.1 L394.9,93.1 L397.1,91.1 L399.3,91.1 L401.4,91.1 L403.6,89.0 L405.8,89.0 L408.0,89.0 L410.1,89.0 L412.3,87.0 L414.5,87.0 L416.6,87.0 L418.8,87.0 L421.0,84.9 L423.2,84.9 L425.3,84.9 L427.5,84.9 L429.7,84.9 L431.9,82.9 L434.0,82.9 L436.2,82.9 L438.4,82.9 L440.5,80.8 L442.7,80.8 L444.9,80.8 L447.1,80.8 L449.2,80.8 L451.4,80.8 L453.6,78.8 L455.7,78.8 L457.9,78.8 L460.1,78.8 L462.3,78.8 L464.4,78.8 L466.6,76.7 L468.8,76.7 L471.0,76.7 L473.1,76.7 L475.3,76.7 L477.5,76.7 L479.6,76.7 L481.8,74.7 L484.0,74.7 L486.2,74.7 L488.3,74.7 L490.5,74.7 L492.7,74.7 L494.9,74.7 L497.0,74.7 L499.2,74.7 L501.4,74.7 L503.5,72.7 L505.7,72.7 L507.9,72.7 L510.1,72.7 L512.2,72.7 L514.4,72.7 L516.6,72.7 L518.8,72.7 L520.9,72.7 L523.1,72.7 L525.3,72.7 L527.4,72.7 L529.6,72.7 L531.8,72.7 L534.0,72.7 L536.1,72.7 L538.3,70.6 L540.5,70.6 L542.7,70.6 L544.8,70.6 L547.0,70.6 L549.2,70.6 L551.3,70.6 L553.5,70.6 L555.7,70.6 L557.9,70.6 L560.0,70.6 L562.2,70.6 L564.4,70.6 L566.5,70.6 L568.7,70.6 L570.9,70.6 L573.1,70.6 L575.2,70.6 L577.4,70.6 L579.6,70.6 L581.8,70.6 L583.9,70.6 L586.1,70.6 L588.3,70.6 L590.4,70.6 L592.6,70.6 L594.8,70.6 L597.0,70.6 L599.1,70.6 L601.3,70.6 L603.5,70.6 L605.7,70.6 L607.8,70.6 L610.0,70.6" fill="none" class="s1" stroke-width="2"/>
+<text class="t3" x="149" y="378" text-anchor="middle">SD 0-86: mute (100 dB, off scale)</text>
+<text class="l1 dl" x="618" y="75">SD 255: -4.5 dB</text>
+<text class="t3" x="253" y="226">SD 88: -44.5 dB</text>
+</svg>

@@ -21,29 +21,25 @@ been integrated.
 
 Questions, build reports and general chat: [join the Discord](https://discord.gg/awMzHfB86T).
 
-## Measured response
+## Volume response
 
-The original TC0060DCA's volume response was measured on the
-[test fixture](testfixture/) by stepping the volume down from full scale and
-recording the output level ([measured/measured.csv](measured/measured.csv)).
-Note the x-axis counts *attenuation steps from full volume* (as in the
-LM1972's register convention, where code 0 = 0 dB), not the machine's SD bus
-value - on the SD bus the direction is inverted (SD 0 = silence, SD 255 =
-full volume) and the firmware's mapping table performs that inversion. The device is a
-linear-in-dB attenuator at almost exactly **0.5 dB per code step** (least-squares
-fit over the first 45 codes: -0.49 dB/step, within +/-0.75 dB of a straight
-line) until the measurement reaches the test rig's ~ -27 dB noise floor. This
-is why the LM1972, a native 0.5 dB/step attenuator, is used as the replacement
-part.
+Both graphs below use the machine's SD bus convention on the x-axis:
+SD 0 = silence, SD 255 = full volume.
 
-![Measured vs ideal response, log view](measured/response.svg)
+**Firmware response.** Computed directly from the `lm1972_mapping` table in
+[main.c](firmware/CH32V203C8T6/User/main.c) and the LM1972 datasheet
+attenuation values (SNAS094D Table 1). SD codes 0-86 map to LM1972 mute
+(codes >= 0x7F = 100 dB); SD 87 gives -74.5 dB, SD 88 -44.5 dB, rising to
+-4.5 dB at SD 255.
 
-The same data in linear amplitude, alongside the sigmoid (S-curve) model from
-[measured/mkcalib.py](measured/mkcalib.py): the measured response follows the
-0.5 dB/step exponential closely, while the sigmoid model is a noticeably
-different shape.
+![CH32 firmware response](measured/firmware_response.svg)
 
-![Measured vs ideal response, linear S-curve view](measured/response_linear.svg)
+**Measured response.** Bench sweeps of output level against SD code, recorded
+on the [test fixture](testfixture/). Each sweep is normalized to its own
+maximum; the source data is committed alongside the chart
+([measured/](measured/)).
+
+![Measured output vs SD code](measured/measured_vs_sd.svg)
 
 ## Test fixture
 
@@ -87,13 +83,13 @@ device, whose American-style symbol has one straight and one curved plate for
 these don't have. Physically they are 0805 ceramic (MLCC) parts, inherently
 non-polar, used as AC coupling in the audio path.
 
-**Why does the response graph run loud-to-quiet?** The x-axis counts
-attenuation steps from full volume, matching the LM1972 register convention
-(datasheet SNAS094D Table 1: code 0x00 = 0.0 dB, 0.5 dB/step to 47.5 dB at
-code 95, 1.0 dB/step to 78 dB at code 126, codes 0x7F-0xFF = 100 dB mute).
-The machine's SD volume bus runs the other way (0 = silence, 255 = full
-volume); the firmware's `lm1972_mapping` table inverts between the two
-conventions.
+**Volume conventions.** The machine's SD bus counts up (0 = silence, 255 =
+full volume). The LM1972 register counts the other way (datasheet SNAS094D
+Table 1: code 0x00 = 0.0 dB, 0.5 dB/step to 47.5 dB at code 95, 1.0 dB/step
+to 78 dB at code 126, codes 0x7F-0xFF = 100 dB mute). The firmware's
+`lm1972_mapping` table translates between the two. The legacy
+[measured/measured.csv](measured/measured.csv) is indexed by attenuation
+step (0 = full volume), not by SD code.
 
 **What value are the coupling caps?** These are AC couplers, so the exact
 value is not critical - it only sets the high-pass corner, which sits far
