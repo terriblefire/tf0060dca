@@ -24,8 +24,12 @@ Questions, build reports and general chat: [join the Discord](https://discord.gg
 ## Measured response
 
 The original TC0060DCA's volume response was measured on the
-[test fixture](testfixture/) by sweeping the SD volume code and recording the
-output level ([measured/measured.csv](measured/measured.csv)). The device is a
+[test fixture](testfixture/) by stepping the volume down from full scale and
+recording the output level ([measured/measured.csv](measured/measured.csv)).
+Note the x-axis counts *attenuation steps from full volume* (as in the
+LM1972's register convention, where code 0 = 0 dB), not the machine's SD bus
+value - on the SD bus the direction is inverted (SD 0 = silence, SD 255 =
+full volume) and the firmware's mapping table performs that inversion. The device is a
 linear-in-dB attenuator at almost exactly **0.5 dB per code step** (least-squares
 fit over the first 45 codes: -0.49 dB/step, within +/-0.75 dB of a straight
 line) until the measurement reaches the test rig's ~ -27 dB noise floor. This
@@ -82,6 +86,14 @@ device, whose American-style symbol has one straight and one curved plate for
 *any* capacitor - a polarized cap in Eagle carries an explicit "+" mark, which
 these don't have. Physically they are 0805 ceramic (MLCC) parts, inherently
 non-polar, used as AC coupling in the audio path.
+
+**Why does the response graph run loud-to-quiet?** The x-axis counts
+attenuation steps from full volume, matching the LM1972 register convention
+(datasheet SNAS094D Table 1: code 0x00 = 0.0 dB, 0.5 dB/step to 47.5 dB at
+code 95, 1.0 dB/step to 78 dB at code 126, codes 0x7F-0xFF = 100 dB mute).
+The machine's SD volume bus runs the other way (0 = silence, 255 = full
+volume); the firmware's `lm1972_mapping` table inverts between the two
+conventions.
 
 **What value are the coupling caps?** These are AC couplers, so the exact
 value is not critical - it only sets the high-pass corner, which sits far
