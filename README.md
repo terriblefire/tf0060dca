@@ -21,28 +21,30 @@ been integrated.
 
 Questions, build reports and general chat: [join the Discord](https://discord.gg/awMzHfB86T).
 
-## Volume response
+## The repro matches the original
 
-Both graphs below use the machine's SD bus convention on the x-axis:
-SD 0 = silence, SD 255 = full volume.
+The key result of this project: measured on the [test fixture](testfixture/),
+the TF0060DCA repro reproduces the original TC0060DCA's volume response to
+within about 2% across the working range. Both sweeps below were taken at the
+same drive level and are referenced to their full-volume (SD 255) output; the
+x-axis is the machine's SD bus convention (0 = silence, 255 = full volume).
+Where the curves part company at the bottom is just the two measurement runs'
+differing noise floors.
 
-**Firmware response.** The blue curve is computed directly from the
-`lm1972_mapping` table in [main.c](firmware/CH32V203C8T6/User/main.c) and the
-LM1972 datasheet attenuation values (SNAS094D Table 1): SD codes 0-86 map to
-LM1972 mute (codes >= 0x7F = 100 dB), SD 87 gives -74.5 dB, SD 88 -44.5 dB,
-rising to -4.5 dB at SD 255. The orange curve is a bench measurement of the
-CH32 board ([measured/ch32_measured.csv](measured/ch32_measured.csv)); it
-matches the computed curve within about 2% everywhere above the test rig's
-~ -23 dB noise floor, which hides the mute region.
+![Original vs repro measured response](measured/measured_vs_sd.svg)
+
+Source data: [raw_curve_second_measure.csv](measured/raw_curve_second_measure.csv)
+(original), [ch32_measured.csv](measured/ch32_measured.csv) (repro).
+
+**Firmware response.** The repro's curve is fully explained by its firmware:
+the computed line is derived from the `lm1972_mapping` table in
+[main.c](firmware/CH32V203C8T6/User/main.c) and the LM1972 datasheet
+attenuation values (SNAS094D Table 1): SD codes 0-86 map to LM1972 mute
+(codes >= 0x7F = 100 dB), SD 87 gives -74.5 dB, SD 88 -44.5 dB, rising to
+-4.5 dB at SD 255. The measured CH32 sweep matches it within about 2%
+everywhere above the rig's ~ -23 dB noise floor, which hides the mute region.
 
 ![CH32 firmware response, computed vs measured](measured/firmware_response.svg)
-
-**Measured response.** Bench sweeps of output level against SD code, recorded
-on the [test fixture](testfixture/). Each sweep is normalized to its own
-maximum; the source data is committed alongside the chart
-([measured/](measured/)).
-
-![Measured output vs SD code](measured/measured_vs_sd.svg)
 
 ## Test fixture
 
