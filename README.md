@@ -26,13 +26,16 @@ Questions, build reports and general chat: [join the Discord](https://discord.gg
 Both graphs below use the machine's SD bus convention on the x-axis:
 SD 0 = silence, SD 255 = full volume.
 
-**Firmware response.** Computed directly from the `lm1972_mapping` table in
-[main.c](firmware/CH32V203C8T6/User/main.c) and the LM1972 datasheet
-attenuation values (SNAS094D Table 1). SD codes 0-86 map to LM1972 mute
-(codes >= 0x7F = 100 dB); SD 87 gives -74.5 dB, SD 88 -44.5 dB, rising to
--4.5 dB at SD 255.
+**Firmware response.** The blue curve is computed directly from the
+`lm1972_mapping` table in [main.c](firmware/CH32V203C8T6/User/main.c) and the
+LM1972 datasheet attenuation values (SNAS094D Table 1): SD codes 0-86 map to
+LM1972 mute (codes >= 0x7F = 100 dB), SD 87 gives -74.5 dB, SD 88 -44.5 dB,
+rising to -4.5 dB at SD 255. The orange curve is a bench measurement of the
+CH32 board ([measured/ch32_measured.csv](measured/ch32_measured.csv)); it
+matches the computed curve within about 2% everywhere above the test rig's
+~ -23 dB noise floor, which hides the mute region.
 
-![CH32 firmware response](measured/firmware_response.svg)
+![CH32 firmware response, computed vs measured](measured/firmware_response.svg)
 
 **Measured response.** Bench sweeps of output level against SD code, recorded
 on the [test fixture](testfixture/). Each sweep is normalized to its own
